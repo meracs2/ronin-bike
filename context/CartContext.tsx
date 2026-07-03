@@ -23,13 +23,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cart]);
 
   const addToCart = (product: any) => {
-    setCart((prev) => [...prev, product]);
-    // Notificación elegante sin bloquear la UI
+    // Generamos un ID único para cada producto agregado
+    const newProduct = { ...product, uniqueId: Date.now() + Math.random() };
+    setCart((prev) => [...prev, newProduct]);
     toast.success(`${product.nombre} agregado al pedido`);
   };
 
-  const removeFromCart = (index: number) => {
-    setCart((prev) => prev.filter((_, i) => i !== index));
+  const removeFromCart = (uniqueId: number) => {
+    setCart((prev) => prev.filter((item) => item.uniqueId !== uniqueId));
     toast.error("Producto eliminado del pedido");
   };
 

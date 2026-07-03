@@ -5,15 +5,6 @@ import { Trash2 } from 'lucide-react';
 export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const { cart, removeFromCart } = useCart();
 
-  // Nueva lógica: borrar filtrando por nombre
-  const handleRemove = (nombre: string) => {
-    // Buscamos el índice del primer elemento con ese nombre
-    const index = cart.findIndex(item => item.nombre === nombre);
-    if (index !== -1) {
-      removeFromCart(index);
-    }
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -26,11 +17,11 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean, onCl
           {cart.length === 0 ? (
             <p className="text-neutral-400">Tu orden está vacía.</p>
           ) : (
-            cart.map((item, i) => (
-              <div key={`${item.nombre}-${i}`} className="flex justify-between items-center border-b border-neutral-700 pb-2">
+            cart.map((item) => (
+              <div key={item.uniqueId} className="flex justify-between items-center border-b border-neutral-700 pb-2">
                 <span>{item.nombre}</span>
                 <button 
-                  onClick={() => handleRemove(item.nombre)} 
+                  onClick={() => removeFromCart(item.uniqueId)} 
                   className="text-red-500 hover:text-red-400 p-2 cursor-pointer"
                 >
                   <Trash2 size={18} />
