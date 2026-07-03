@@ -17,7 +17,8 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean, onCl
           {cart.length === 0 ? (
             <p className="text-neutral-400">Tu orden está vacía.</p>
           ) : (
-            cart.map((item) => (
+            // CORRECCIÓN AQUÍ: Agregamos ": any" al parámetro item
+            cart.map((item: any) => (
               <div key={item.uniqueId} className="flex justify-between items-center border-b border-neutral-700 pb-2">
                 <span>{item.nombre}</span>
                 <button 
