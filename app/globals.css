@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fcfbfa; /* Un blanco marfil/crema cálido, nada de negro lúgubre */
-  --foreground: #111111; /* Tipografía grafito oscuro para un contraste fino */
+  --background: #dccab0; /* Color arena uniforme para todo el sitio */
+  --foreground: #2d2621; /* Grafito oscuro para buen contraste sobre el arena */
 }
 
 @theme inline {

@@ -24,10 +24,10 @@ export default function ProductCarousel() {
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
   return (
-    <section className="py-16 bg-[#fcfbfa]">
+    <section className="py-16" style={{ backgroundColor: '#dccab0' }}>
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         
-        {/* 1. PRODUCTOS DESTACADOS */}
+        {/* Encabezado */}
         <div className="flex items-end justify-between mb-10">
           <h2 className="text-3xl font-bold uppercase tracking-tighter">Productos Destacados</h2>
           <div className="flex gap-2">
@@ -40,6 +40,7 @@ export default function ProductCarousel() {
           </div>
         </div>
 
+        {/* Carrusel de Productos */}
         <div className="overflow-hidden mb-24" ref={emblaRef}>
           <div className="flex gap-6">
             {productosDestacados.map((prod) => (
@@ -59,29 +60,16 @@ export default function ProductCarousel() {
           </div>
         </div>
 
-        {/* 2. PRODUCTOS SELECCIONADOS */}
-        <h2 className="text-xl font-bold uppercase tracking-widest text-neutral-400 mb-12">
+        {/* Productos Seleccionados - Tamaño y color corregidos */}
+        <h2 className="text-3xl font-bold uppercase tracking-tighter text-[#2d2621] mb-12">
           Productos Seleccionados
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
-          <ProductCard 
-            nombre="Shimano XT M8100" 
-            desc="La referencia en precisión y durabilidad." 
-            cantidadFotos={3} 
-          />
-          <ProductCard 
-            nombre="Venzo Raptor 2026" 
-            desc="Geometría moderna para XC, ultra ligero." 
-            cantidadFotos={3} // <--- CORREGIDO: ahora tiene 3
-          />
-          <ProductCard 
-            nombre="Giro Aether MIPS" 
-            desc="Protección de nivel profesional." 
-            cantidadFotos={4} 
-          />
+          <ProductCard nombre="Shimano XT M8100" desc="La referencia en precisión y durabilidad." cantidadFotos={3} />
+          <ProductCard nombre="Venzo Raptor 2026" desc="Geometría moderna para XC, ultra ligero." cantidadFotos={3} />
+          <ProductCard nombre="Giro Aether MIPS" desc="Protección de nivel profesional." cantidadFotos={4} />
         </div>
-
       </div>
     </section>
   );
