@@ -3,10 +3,18 @@
 import React from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 
+// Definimos la estructura de los datos que recibe el componente
+interface ProductCardProps {
+  nombre: string;
+  desc: string;
+  cantidadFotos: number;
+}
+
 // Colores de prueba para el carrusel
 const colores = ["bg-red-200", "bg-blue-200", "bg-green-200", "bg-yellow-200", "bg-purple-200"];
 
-export default function ProductCard({ nombre, desc, cantidadFotos }) {
+// Aplicamos la interfaz al componente
+export default function ProductCard({ nombre, desc, cantidadFotos }: ProductCardProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
   return (
