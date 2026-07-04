@@ -1,12 +1,13 @@
 import './globals.css';
 import type { Metadata } from 'next';
-// ASEGURATE DE QUE ESTA RUTA SEA CORRECTA SEGUN TU CARPETA
 import { CartProvider } from '../context/CartContext'; 
 import { Toaster } from 'sonner';
+import Navbar from '@/components/Navbar'; // Asegurate de importar tu Navbar
+import Footer from '@/components/Footer'; // Asegurate de importar tu Footer
 
 export const metadata: Metadata = {
-  title: 'Ronin Bike',
-  description: 'Tu sitio web de ciclismo',
+  title: 'Ronin Bike | Ciclismo Profesional',
+  description: 'Tu sitio web de ciclismo de confianza en Córdoba',
 };
 
 export default function RootLayout({
@@ -16,16 +17,27 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="bg-[#0d0e12] text-white">
+      {/* Aplicamos el color crema base en el body */}
+      <body className="bg-[#e6dec8] text-[#2d2621] min-h-screen flex flex-col">
         <CartProvider>
-          {children}
+          {/* Navbar arriba */}
+          <Navbar />
+          
+          {/* Contenido principal */}
+          <main className="flex-grow">
+            {children}
+          </main>
+          
+          {/* Footer abajo */}
+          <Footer />
+
           <Toaster 
             position="bottom-right" 
             toastOptions={{
               style: {
-                background: '#171717',
+                background: '#5e5345', // Color marrón Ronin
                 color: '#ffffff',
-                border: '1px solid #333'
+                border: '1px solid #dccab0'
               },
             }}
           />

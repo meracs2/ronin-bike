@@ -2,7 +2,13 @@ import { MapPin, Phone } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#5e5345] text-[#e6dec8] py-12 px-6 border-t border-[#4a4237]">
+    <footer 
+      className="text-[#e6dec8] py-12 px-6 border-t border-[#4a4237]"
+      style={{ 
+        backgroundColor: '#5e5345', 
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.12'/%3E%3C/svg%3E")`
+      }}
+    >
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
         
         {/* Bloque 1: Marca */}
