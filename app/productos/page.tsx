@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { productos } from '@/data/productos';
-import ProductCard from '@/components/ProductCard';
+import ProductCard from '@/components/ProductCardviejo';
 import FilterBox from './components/FilterBox';
 
 export default function ProductosPage() {

@@ -1,70 +1,48 @@
 "use client";
-
-import React, { useCallback } from 'react';
+import React from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import ProductCard from './ProductCard';
-
-// Estos datos deberían venir de tu base de datos o archivo de productos
-const productosDestacados = [
-  { id: 1, nombre: "Bicicleta MTB Pro", categoria: "Montaña", precio: 1200000, slug: "mtb-pro" },
-  { id: 2, nombre: "Casco Aero Race", categoria: "Accesorios", precio: 85000, slug: "casco-aero" },
-  { id: 3, nombre: "Kit Reparación", categoria: "Taller", precio: 45000, slug: "kit-reparacion" },
-];
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function ProductCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start', dragFree: true });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start', slidesToScroll: 1 });
 
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+  const productosDestacados = [
+    { nombre: "Grupo Shimano XT M8100 12v Competencia", desc: "Transmisión monoplato 1x12", precio: 850000, slug: "shimano-xt", cantidadFotos: 1 },
+    { nombre: "Bicicleta Venzo Raptor EX R29 Aluminio", desc: "Frenos hidráulicos, Horquilla c/ bloqueo", precio: 620000, slug: "venzo-raptor", cantidadFotos: 1 },
+    { nombre: "Casco Giro Aether MIPS Premium", desc: "Protección esférica de alta gama", precio: 240000, slug: "giro-aether", cantidadFotos: 1 },
+    { nombre: "Cubierta Maxxis Ikon 29x2.20 TLR", desc: "Compuesto rápido para Cross Country", precio: 85000, slug: "maxxis-ikon", cantidadFotos: 1 }
+  ];
 
   return (
-    <section className="py-16" style={{ backgroundColor: '#dccab0' }}>
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+    <div className="w-full">
+      {/* HEADER DE LA SECCIÓN CON CONTROLES INTEGRADOS (IGUAL A GORILA GAMES) */}
+      <div className="flex items-center justify-between border-b border-neutral-200 pb-3 mb-6">
+        <h3 className="text-xl font-black tracking-tight text-[#2d2621] uppercase flex items-center gap-2">
+          Nuevos Ingresos <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+        </h3>
         
-        {/* ENCABEZADO */}
-        <div className="flex items-end justify-between mb-10">
-          <h2 className="text-3xl font-bold uppercase tracking-tighter text-[#2d2621]">
-            Productos Destacados
-          </h2>
-          <div className="flex gap-2">
-            <button onClick={scrollPrev} className="w-10 h-10 flex items-center justify-center border-2 border-[#2d2621] bg-white hover:bg-[#2d2621] hover:text-white transition-all font-bold shadow-sm">
-              &lt;
-            </button>
-            <button onClick={scrollNext} className="w-10 h-10 flex items-center justify-center border-2 border-[#2d2621] bg-white hover:bg-[#2d2621] hover:text-white transition-all font-bold shadow-sm">
-              &gt;
-            </button>
-          </div>
-        </div>
-
-        {/* CARRUSEL DE PRODUCTOS */}
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-6 pb-8">
-            {productosDestacados.map((prod) => (
-              <div key={prod.id} className="flex-[0_0_280px] md:flex-[0_0_300px]">
-                {/* Usamos el mismo ProductCard para mantener consistencia */}
-                <ProductCard 
-                  nombre={prod.nombre} 
-                  desc={prod.categoria} 
-                  precio={prod.precio} 
-                  slug={prod.slug} 
-                  cantidadFotos={2} 
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* PRODUCTOS SELECCIONADOS */}
-        <h2 className="text-3xl font-bold uppercase tracking-tighter text-[#2d2621] mt-16 mb-12">
-          Productos Seleccionados
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          <ProductCard nombre="Shimano XT M8100" desc="Precisión y durabilidad." precio={450000} slug="shimano-xt" cantidadFotos={3} />
-          <ProductCard nombre="Venzo Raptor 2026" desc="Geometría moderna." precio={850000} slug="venzo-raptor" cantidadFotos={3} />
-          <ProductCard nombre="Giro Aether MIPS" desc="Protección profesional." precio={220000} slug="giro-aether" cantidadFotos={4} />
+        {/* Controles compactos arriba a la derecha */}
+        <div className="flex items-center gap-1">
+          <button onClick={() => emblaApi?.scrollPrev()} className="p-1.5 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-800 transition">
+            <ChevronLeft size={16} />
+          </button>
+          <button onClick={() => emblaApi?.scrollNext()} className="p-1.5 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-800 transition">
+            <ChevronRight size={16} />
+          </button>
         </div>
       </div>
-    </section>
+
+      {/* VIEWPORT DEL CAROUSEL */}
+      <div className="overflow-hidden w-full" ref={emblaRef}>
+        <div className="flex gap-4">
+          {productosDestacados.map((prod, index) => (
+            <div key={index} className="flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_33.333%] lg:flex-[0_0_25%] min-w-0">
+              <ProductCard {...prod} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
