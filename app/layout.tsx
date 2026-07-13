@@ -2,8 +2,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { CartProvider } from '../context/CartContext'; 
 import { Toaster } from 'sonner';
-import Navbar from '@/components/Navbar'; // Asegurate de importar tu Navbar
-import Footer from '@/components/Footer'; // Asegurate de importar tu Footer
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Ronin Bike | Ciclismo Profesional',
