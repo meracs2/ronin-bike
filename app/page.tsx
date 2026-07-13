@@ -119,6 +119,69 @@ function LocalProductCard({ nombre, precio, precioViejo, desc, tag, img }: Produ
 // --- COMPONENTE: CARRUSEL DE PRODUCTOS ---
 function LocalProductCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start', slidesToScroll: 1 });
+  const carouselContainerRef = useRef<HTMLDivElement | null>(null);
+  const lastHoverZoneRef = useRef<'left' | 'right' | null>(null);
+  const isDraggingRef = useRef(false);
+
+  useEffect(() => {
+    const container = carouselContainerRef.current;
+    if (!container || !emblaApi) return;
+
+    let hoverTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const handleMove = (event: MouseEvent) => {
+      if (isDraggingRef.current || event.movementX === 0) return;
+
+      const rect = container.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const zone = x < rect.width / 2 ? 'left' : 'right';
+
+      if (lastHoverZoneRef.current === zone) return;
+
+      lastHoverZoneRef.current = zone;
+
+      if (hoverTimer) clearTimeout(hoverTimer);
+
+      hoverTimer = setTimeout(() => {
+        if (zone === 'left') {
+          emblaApi.scrollPrev();
+        } else {
+          emblaApi.scrollNext();
+        }
+      }, 120);
+    };
+
+    const handleMouseDown = (event: MouseEvent) => {
+      if (event.button === 0) {
+        isDraggingRef.current = true;
+      }
+    };
+
+    const handleMouseUp = (event: MouseEvent) => {
+      if (event.button === 0) {
+        isDraggingRef.current = false;
+      }
+    };
+
+    const resetZone = () => {
+      lastHoverZoneRef.current = null;
+      isDraggingRef.current = false;
+    };
+
+    container.addEventListener('mousemove', handleMove);
+    container.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
+    container.addEventListener('mouseleave', resetZone);
+
+    return () => {
+      if (hoverTimer) clearTimeout(hoverTimer);
+      container.removeEventListener('mousemove', handleMove);
+      container.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
+      container.removeEventListener('mouseleave', resetZone);
+    };
+  }, [emblaApi]);
+
   return (
     <div className="w-full">
       <div className="relative flex items-center justify-between mb-6">
@@ -131,7 +194,13 @@ function LocalProductCarousel() {
           <button onClick={() => emblaApi?.scrollNext()} className="p-1 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-500 rounded transition"><ChevronRight size={16} /></button>
         </div>
       </div>
-      <div className="overflow-hidden w-full" ref={emblaRef}>
+      <div
+        className="overflow-hidden w-full cursor-pointer"
+        ref={(node) => {
+          carouselContainerRef.current = node;
+          emblaRef(node);
+        }}
+      >
         <div className="flex gap-4">
           {[...productosDestacados, ...productosDestacados].map((prod, i) => (
             <div key={i} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_25%] min-w-0"><LocalProductCard {...prod} /></div>
