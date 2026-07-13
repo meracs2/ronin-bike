@@ -12,7 +12,11 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ nombre, desc, precio, slug }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const cartContext = useCart();
+
+  if (!cartContext) return null;
+
+  const { addToCart } = cartContext;
 
   return (
     <div className="group flex flex-col justify-between overflow-hidden rounded-xl border border-neutral-200/60 bg-white p-3 hover:shadow-md transition-all duration-300 text-neutral-950">

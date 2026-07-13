@@ -10,7 +10,11 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // Nuevo estado para controlar el menú desplegable de productos
   const [isProductsOpen, setIsProductsOpen] = useState(false);
-  const { cart } = useCart();
+  const cartContext = useCart();
+
+  if (!cartContext) return null;
+
+  const { cart } = cartContext;
 
   const categoriasMenu = [
     { name: 'Bicicletas Completas', href: '/productos/bicicletas' },

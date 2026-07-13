@@ -2,10 +2,23 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
-const CartContext = createContext<any>(null);
+export type CartItem = {
+  nombre: string;
+  precio?: number;
+  uniqueId?: number;
+  [key: string]: unknown;
+};
+
+type CartContextType = {
+  cart: CartItem[];
+  addToCart: (product: CartItem) => void;
+  removeFromCart: (uniqueId: number) => void;
+};
+
+const CartContext = createContext<CartContextType | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<any[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
@@ -22,8 +35,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (product: any) => {
-    // Generamos un ID único para cada producto agregado
+  const addToCart = (product: CartItem) => {
     const newProduct = { ...product, uniqueId: Date.now() + Math.random() };
     setCart((prev) => [...prev, newProduct]);
     toast.success(`${product.nombre} agregado al pedido`);

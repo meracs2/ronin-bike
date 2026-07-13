@@ -416,7 +416,7 @@ export default function Home() {
         <LocalProductCarousel />
       </section>
 
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 mt-20">
+      <section className="max-w-360 mx-auto px-4 md:px-8 mt-20">
         <div className="mb-8">
           <span className="text-xs font-bold text-[#5e5345] uppercase tracking-widest">Catálogo Seleccionado</span>
           <h3 className="text-2xl font-black tracking-tighter text-neutral-900 uppercase">Explorá Categorías</h3>

@@ -1,9 +1,14 @@
 "use client";
 import { useCart } from '../context/CartContext';
+import type { CartItem } from '../context/CartContext';
 import { Trash2 } from 'lucide-react';
 
 export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
-  const { cart, removeFromCart } = useCart();
+  const cartContext = useCart();
+
+  if (!cartContext) return null;
+
+  const { cart, removeFromCart } = cartContext;
 
   if (!isOpen) return null;
 
@@ -17,18 +22,25 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean, onCl
           {cart.length === 0 ? (
             <p className="text-neutral-400">Tu orden está vacía.</p>
           ) : (
-            // CORRECCIÓN AQUÍ: Agregamos ": any" al parámetro item
-            cart.map((item: any) => (
-              <div key={item.uniqueId} className="flex justify-between items-center border-b border-neutral-700 pb-2">
-                <span>{item.nombre}</span>
-                <button 
-                  onClick={() => removeFromCart(item.uniqueId)} 
-                  className="text-red-500 hover:text-red-400 p-2 cursor-pointer"
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
-            ))
+            cart.map((item: CartItem) => {
+              const handleRemove = () => {
+                if (typeof item.uniqueId === 'number') {
+                  removeFromCart(item.uniqueId);
+                }
+              };
+
+              return (
+                <div key={item.uniqueId} className="flex justify-between items-center border-b border-neutral-700 pb-2">
+                  <span>{item.nombre}</span>
+                  <button 
+                    onClick={handleRemove} 
+                    className="text-red-500 hover:text-red-400 p-2 cursor-pointer"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              );
+            })
           )}
         </div>
 

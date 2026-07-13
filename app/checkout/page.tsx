@@ -1,13 +1,17 @@
 "use client";
 import { useCart } from '../../context/CartContext';
+import type { CartItem } from '../../context/CartContext';
 
 export default function CheckoutPage() {
-  const { cart } = useCart();
+  const cartContext = useCart();
+
+  if (!cartContext) return null;
+
+  const { cart } = cartContext;
 
   const handleConfirm = () => {
-    // Corregido: agregado el paréntesis necesario para el tipado (i: any)
-    const items = cart.map((i: any) => `• ${i.nombre}`).join('\n');
-    
+    const items = cart.map((item: CartItem) => `• ${item.nombre}`).join('\n');
+
     window.open(`https://wa.me/5493510000000?text=${encodeURIComponent(`Hola, quiero pedir:\n\n${items}`)}`, '_blank');
   };
 
@@ -19,7 +23,7 @@ export default function CheckoutPage() {
         <p>Tu orden está vacía.</p>
       ) : (
         <div className="bg-neutral-900 p-6 rounded-lg">
-          {cart.map((item: any, i: number) => (
+          {cart.map((item: CartItem, i: number) => (
             <div key={i} className="border-b border-neutral-700 pb-2 mb-2">
               {item.nombre}
             </div>
