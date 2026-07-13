@@ -1,13 +1,30 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { ChevronLeft, ChevronRight, Maximize2, ArrowRight, X, Send } from 'lucide-react';
 // Importamos tu componente separado
 import InfoBar from '@/components/InfoBar';
 
+type ProductoDestacado = {
+  nombre: string;
+  precio: number;
+  precioViejo: number;
+  desc: string;
+  tag: string;
+  img: string;
+};
+
+type CategoriaPremium = {
+  titulo: string;
+  items: string;
+  img: string;
+  grid: string;
+};
+
 // --- DATOS DE RONIN BIKE ---
-const bannersCabecera = [
+const bannersCabecera: Array<{ title: string; sub: string; img: string }> = [
   { 
     title: "POTENCIA PARA TU SETUP DE CICLISMO", 
     sub: "3 CUOTAS SIN INTERÉS EN COMPONENTES", 
@@ -20,7 +37,7 @@ const bannersCabecera = [
   }
 ];
 
-const productosDestacados = [
+const productosDestacados: ProductoDestacado[] = [
   { 
     nombre: "[Combo Transmisión] Grupo Shimano XT M8100 12v + Cadena HG701", 
     precio: 850000, 
@@ -55,7 +72,7 @@ const productosDestacados = [
   }
 ];
 
-const categoriasPremium = [
+const categoriasPremium: CategoriaPremium[] = [
   { titulo: "Bicicletas MTB", items: "Venzo, Scott, Specialized", img: "https://images.unsplash.com/photo-1544192240-4a34feb0104a?q=80&w=600", grid: "md:col-span-2" },
   { titulo: "Componentes", items: "Shimano, SRAM, Fox", img: "https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?q=80&w=600", grid: "md:col-span-1" },
   { titulo: "Accesorios", items: "Cascos, Luces, Indumentaria", img: "https://images.unsplash.com/photo-1511994298241-608e28f14fde?q=80&w=600", grid: "md:col-span-1" },
@@ -63,18 +80,20 @@ const categoriasPremium = [
 ];
 
 // --- COMPONENTE: TARJETA DE PRODUCTO HORIZONTAL ---
-function LocalProductCard({ nombre, precio, precioViejo, desc, tag, img }: any) {
+function LocalProductCard({ nombre, precio, precioViejo, desc, tag, img }: ProductoDestacado) {
   return (
-    <div className="group relative flex bg-white border border-neutral-100 rounded p-4 hover:shadow-md transition-shadow duration-200 h-[140px] text-neutral-950 select-none">
+    <div className="group relative flex bg-white border border-neutral-100 rounded p-4 hover:shadow-md transition-shadow duration-200 h-35 text-neutral-950 select-none">
       <button className="absolute top-2 right-2 text-neutral-300 hover:text-neutral-500 transition z-20">
         <Maximize2 size={13} />
       </button>
 
-      <div className="w-24 h-full flex-shrink-0 bg-neutral-50 border border-neutral-100 rounded flex items-center justify-center relative overflow-hidden">
-        <img 
+      <div className="w-24 h-full shrink-0 bg-neutral-50 border border-neutral-100 rounded flex items-center justify-center relative overflow-hidden">
+        <Image 
           src={img} 
           alt={nombre} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          fill
+          sizes="(max-width: 768px) 100vw, 25vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
       </div>
 
@@ -106,7 +125,7 @@ function LocalProductCarousel() {
         <div className="flex items-center gap-4 bg-[#fcfbfa] pr-4 z-10">
           <h3 className="text-lg font-black tracking-tighter text-neutral-800 uppercase">¡Nuevos Ingresos!</h3>
         </div>
-        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[2px] bg-neutral-200 z-0" />
+        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-neutral-200 z-0" />
         <div className="flex items-center gap-1 bg-[#fcfbfa] pl-4 z-10">
           <button onClick={() => emblaApi?.scrollPrev()} className="p-1 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-500 rounded transition"><ChevronLeft size={16} /></button>
           <button onClick={() => emblaApi?.scrollNext()} className="p-1 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-500 rounded transition"><ChevronRight size={16} /></button>
@@ -130,15 +149,17 @@ function LocalHeroCarousel() {
     <div className="overflow-hidden w-full bg-neutral-950 text-white" ref={emblaRef}>
       <div className="flex">
         {bannersCabecera.map((b, i) => (
-          <div key={i} className="flex-[0_0_100%] min-w-0 h-[340px] md:h-[480px] relative flex flex-col justify-center px-6 md:px-24">
-            <img 
+          <div key={i} className="flex-[0_0_100%] min-w-0 h-85 md:h-120 relative flex flex-col justify-center px-6 md:px-24">
+            <Image 
               src={b.img} 
               alt={b.title} 
-              className="absolute inset-0 w-full h-full object-cover opacity-35" 
+              fill
+              sizes="100vw"
+              className="object-cover opacity-35"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-900/60 to-transparent z-10" />
+            <div className="absolute inset-0 bg-linear-to-r from-neutral-950 via-neutral-900/60 to-transparent z-10" />
             
-            <div className="max-w-[1440px] mx-auto w-full flex flex-col items-start relative z-20">
+            <div className="max-w-360 mx-auto w-full flex flex-col items-start relative z-20">
               <span className="text-xs md:text-sm font-black tracking-widest text-[#5e5345] bg-[#fcfbfa] px-3 py-1 rounded mb-4 uppercase">
                 {b.sub}
               </span>
@@ -198,20 +219,30 @@ function LocalWspFloat() {
     }, 1000);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollToBottom = () => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+  };
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end" ref={chatRef}>
       {chatAbierto && (
-        <div className="mb-4 w-[320px] sm:w-[360px] h-[450px] bg-white rounded-lg border border-neutral-200 shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200 text-neutral-950">
+        <div className="mb-4 w-80 sm:w-90 h-112.5 bg-white rounded-lg border border-neutral-200 shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200 text-neutral-950">
           
           {/* Cabecera con LOGO INTEGRADO */}
           <div className="p-4 bg-[#5e5345] text-white flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 p-0.5 bg-white/10 rounded-full flex items-center justify-center overflow-hidden">
+              <div className="relative w-10 h-10 p-0.5 bg-white/10 rounded-full flex items-center justify-center overflow-hidden">
                 {/* === REFERENCIA AL ARCHIVO logo-ronin.jpg === */}
-                <img 
+                <Image 
                   src="/logo-ronin.jpg" 
                   alt="Ronin Bike Logo" 
-                  className="w-full h-full object-contain"
+                  fill
+                  sizes="48px"
+                  className="object-contain"
                 />
               </div>
               <div>
@@ -257,17 +288,38 @@ function LocalWspFloat() {
         </div>
       )}
 
+      {!chatAbierto && (
+        <div className="mb-2 flex flex-col items-end gap-1.5 opacity-0 transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100">
+          <button
+            onClick={scrollToTop}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/40 bg-[#5e5345]/40 text-white shadow-md backdrop-blur-sm transition hover:scale-105 hover:bg-[#5e5345]/70"
+            aria-label="Subir a la parte superior"
+          >
+            ↑
+          </button>
+          <button
+            onClick={scrollToBottom}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/40 bg-[#5e5345]/40 text-white shadow-md backdrop-blur-sm transition hover:scale-105 hover:bg-[#5e5345]/70"
+            aria-label="Bajar a la parte inferior"
+          >
+            ↓
+          </button>
+        </div>
+      )}
+
       {/* Disparador Flotante con LOGO PROPIO */}
       <button
         onClick={() => setChatAbierto(!chatAbierto)}
-        className="flex items-center justify-center p-0 w-16 h-16 bg-white rounded-full shadow-xl border border-neutral-100 hover:scale-110 transition-all duration-300 group overflow-hidden"
+        className="relative flex items-center justify-center p-0 w-16 h-16 bg-white rounded-full shadow-xl border border-neutral-100 hover:scale-110 transition-all duration-300 group overflow-hidden"
         aria-label="Abrir chat de soporte"
       >
         {/* === REFERENCIA AL ARCHIVO logo-ronin.jpg === */}
-        <img 
+        <Image 
           src="/logo-ronin.jpg" 
           alt="Abrir chat de soporte Ronin Bike" 
-          className="w-full h-full object-contain p-1"
+          fill
+          sizes="64px"
+          className="object-contain p-1"
         />
         {!chatAbierto && (
           <span className="absolute right-20 bg-white text-neutral-900 text-xs font-bold px-3 py-1.5 rounded shadow-md border border-neutral-100 opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
@@ -291,7 +343,7 @@ export default function Home() {
       {/* BARRA DE INFO INTERACTIVA */}
       <InfoBar />
 
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 mt-12">
+      <section className="max-w-360 mx-auto px-4 md:px-8 mt-12">
         <LocalProductCarousel />
       </section>
 
@@ -303,9 +355,9 @@ export default function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {categoriasPremium.map((cat, i) => (
-            <div key={i} className={`group relative rounded overflow-hidden h-[240px] bg-neutral-900 ${cat.grid} transition-all duration-300`}>
-              <img src={cat.img} alt={cat.titulo} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent p-6 flex flex-col justify-end">
+            <div key={i} className={`group relative rounded overflow-hidden h-60 bg-neutral-900 ${cat.grid} transition-all duration-300`}>
+              <Image src={cat.img} alt={cat.titulo} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-transparent p-6 flex flex-col justify-end">
                 <span className="text-[10px] text-[#dccab0] font-bold uppercase tracking-wider mb-1">{cat.items}</span>
                 <h4 className="text-xl font-black text-white uppercase tracking-tighter flex items-center gap-2">
                   {cat.titulo}
@@ -317,7 +369,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 mt-20">
+      <section className="max-w-360uto px-4 md:px-8 mt-20">
         <div className="relative rounded bg-neutral-900 text-white overflow-hidden p-8 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8 border border-neutral-800">
           <div className="max-w-2xl text-center md:text-left">
             <span className="text-[11px] font-black tracking-widest text-[#dccab0] uppercase block mb-2">
